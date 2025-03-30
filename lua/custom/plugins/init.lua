@@ -25,4 +25,13 @@ return {
       require('nvim-surround').setup()
     end,
   },
+  {
+    'zbirenbaum/copilot.lua',
+    event = 'InsertEnter',
+    opts = {
+      suggestion = {
+        auto_trigger = true,
+      },
+    },
+  },
 }
