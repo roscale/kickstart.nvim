@@ -25,6 +25,7 @@ return {
       require('nvim-surround').setup()
     end,
   },
+
   {
     'zbirenbaum/copilot.lua',
     event = 'InsertEnter',
@@ -33,5 +34,11 @@ return {
         auto_trigger = true,
       },
     },
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
   },
 }

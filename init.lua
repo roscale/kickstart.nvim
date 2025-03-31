@@ -194,6 +194,8 @@ vim.keymap.set('n', '<C-S-Right>', '<C-w>L', { desc = 'Move window to the right'
 vim.keymap.set('n', '<C-S-Down>', '<C-w>J', { desc = 'Move window to the lower' })
 vim.keymap.set('n', '<C-S-Up>', '<C-w>K', { desc = 'Move window to the upper' })
 
+vim.keymap.set('n', '<F4>', '<cmd>:ClangdSwitchSourceHeader<CR>', { silent = true, desc = 'Switch between source/header file' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -816,6 +818,8 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp-signature-help',
+
+      'onsails/lspkind.nvim', -- Adds vscode-like pictograms to nvim-cmp
     },
     config = function()
       -- See `:help cmp`
@@ -824,6 +828,27 @@ require('lazy').setup({
       luasnip.config.setup {}
 
       cmp.setup {
+        formatting = {
+          format = require('lspkind').cmp_format {
+            mode = 'symbol_text', -- show only symbol annotations
+            maxwidth = {
+              -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+              -- can also be a function to dynamically calculate max width such as
+              -- menu = function() return math.floor(0.45 * vim.o.columns) end,
+              menu = 50, -- leading text (labelDetails)
+              abbr = 50, -- actual suggestion item
+            },
+            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+            show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+
+            -- The function below will be called before any actual modifications from lspkind
+            -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+            before = function(entry, vim_item)
+              -- ...
+              return vim_item
+            end,
+          },
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -933,21 +958,6 @@ require('lazy').setup({
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
-
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
-
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
