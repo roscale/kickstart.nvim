@@ -41,4 +41,41 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
   },
+
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    opts = {
+      open_mapping = '\\',
+      insert_mappings = false,
+      hide_numbers = true,
+      direction = 'vertical',
+      size = 60,
+    },
+    config = function(_, opts)
+      require('toggleterm').setup(opts)
+      local Terminal = require('toggleterm.terminal').Terminal
+      local lazygit = Terminal:new {
+        cmd = 'lazygit',
+        hidden = true,
+        direction = 'float',
+        float_opts = {
+          border = 'curved',
+        },
+        on_open = function(term)
+          vim.cmd 'startinsert!'
+          vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
+        end,
+        on_close = function()
+          vim.cmd 'startinsert!'
+        end,
+      }
+
+      function _LAZYGIT_TOGGLE()
+        lazygit:toggle()
+      end
+
+      vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua _LAZYGIT_TOGGLE()<CR>', { noremap = true, silent = true })
+    end,
+  },
 }

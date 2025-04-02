@@ -1050,5 +1050,7 @@ require('lazy').setup({
   },
 })
 
+vim.cmd [[highlight CopilotSuggestion guifg=#888888]]
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
