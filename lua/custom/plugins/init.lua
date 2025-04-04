@@ -21,9 +21,7 @@ return {
   {
     'kylechui/nvim-surround',
     event = 'VeryLazy',
-    config = function()
-      require('nvim-surround').setup()
-    end,
+    opts = {},
   },
 
   {
@@ -34,6 +32,10 @@ return {
         auto_trigger = true,
       },
     },
+    config = function(_, opts)
+      require('copilot').setup(opts)
+      vim.cmd [[highlight CopilotSuggestion guifg=#888888]]
+    end,
   },
 
   {
@@ -54,6 +56,7 @@ return {
     },
     config = function(_, opts)
       require('toggleterm').setup(opts)
+
       local Terminal = require('toggleterm.terminal').Terminal
       local lazygit = Terminal:new {
         cmd = 'lazygit',
@@ -76,6 +79,17 @@ return {
       end
 
       vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua _LAZYGIT_TOGGLE()<CR>', { noremap = true, silent = true })
+    end,
+  },
+
+  {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+
+      local ft = require 'Comment.ft'
+      ft.set('c', { '//%s', '/*%s*/' })
+      ft.set('cpp', { '//%s', '/*%s*/' })
     end,
   },
 }
