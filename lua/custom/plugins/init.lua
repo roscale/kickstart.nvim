@@ -92,4 +92,24 @@ return {
       ft.set('cpp', { '//%s', '/*%s*/' })
     end,
   },
+
+  {
+    'rmagatti/auto-session',
+    opts = {},
+  },
+
+  {
+    'stevearc/overseer.nvim',
+    opts = {},
+  },
+
+  {
+    'Civitasv/cmake-tools.nvim',
+    opts = {},
+  },
+
+  {
+    'Pocco81/auto-save.nvim',
+    opts = {},
+  },
 }
