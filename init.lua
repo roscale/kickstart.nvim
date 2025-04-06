@@ -210,6 +210,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'cpp', 'c' },
+  callback = function()
+    vim.bo.commentstring = '// %s'
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -757,20 +764,6 @@ require('lazy').setup({
     },
     opts = {
       notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          return nil
-        else
-          return {
-            timeout_ms = 500,
-            lsp_format = 'fallback',
-          }
-        end
-      end,
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
@@ -972,6 +965,35 @@ require('lazy').setup({
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
 
+      require('mini.files').setup {
+        mappings = {
+          go_in = '<Right>',
+          go_in_plus = '<S-Right>',
+          go_out = '<Left>',
+          go_out_plus = '<S-Left>',
+        },
+      }
+
+      vim.keymap.set('n', '<C-\\>', function()
+        require('mini.files').open()
+      end)
+
+      require('mini.icons').setup()
+
+      require('mini.move').setup( {
+        mappings = {
+          left = '<M-Left>',
+          right = '<M-Right>',
+          down = '<M-Down>',
+          up = '<M-Up>',
+
+          line_left = '<M-Left>',
+          line_right = '<M-Right>',
+          line_down = '<M-Down>',
+          line_up = '<M-Up>',
+        },
+      })
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
@@ -1028,7 +1050,6 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
