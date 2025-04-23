@@ -407,6 +407,13 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
+        defaults = {
+          mappings = {
+            n = {
+              ['dd'] = require('telescope.actions').delete_buffer,
+            },
+          },
+        },
         -- defaults = {
         --   mappings = {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
@@ -686,7 +693,15 @@ require('lazy').setup({
         clangd = clangd_setup_args,
         -- gopls = {},
         pyright = {},
-        rust_analyzer = {},
+        rust_analyzer = esp_idf_path and {
+          settings = {
+            ['rust-analyzer'] = {
+              cargo = {
+                target = 'xtensa-esp32s3-espidf',
+              },
+            },
+          },
+        } or {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -965,22 +980,24 @@ require('lazy').setup({
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
 
-      require('mini.files').setup {
+      local mini_files = require('mini.files')
+
+      mini_files.setup {
         mappings = {
-          go_in = '<Right>',
-          go_in_plus = '<S-Right>',
-          go_out = '<Left>',
-          go_out_plus = '<S-Left>',
+          close = '<Esc>',
+          go_in_plus = '<Right>',
+          go_out_plus = '<Left>',
         },
       }
 
       vim.keymap.set('n', '<C-\\>', function()
-        require('mini.files').open()
+        mini_files.open(vim.api.nvim_buf_get_name(0), false)
+        mini_files.reveal_cwd()
       end)
 
       require('mini.icons').setup()
 
-      require('mini.move').setup( {
+      require('mini.move').setup {
         mappings = {
           left = '<M-Left>',
           right = '<M-Right>',
@@ -992,7 +1009,7 @@ require('lazy').setup({
           line_down = '<M-Down>',
           line_up = '<M-Up>',
         },
-      })
+      }
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
