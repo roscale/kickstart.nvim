@@ -54,32 +54,6 @@ return {
       direction = 'vertical',
       size = 60,
     },
-    config = function(_, opts)
-      require('toggleterm').setup(opts)
-
-      local Terminal = require('toggleterm.terminal').Terminal
-      local lazygit = Terminal:new {
-        cmd = 'lazygit',
-        hidden = true,
-        direction = 'float',
-        float_opts = {
-          border = 'curved',
-        },
-        on_open = function(term)
-          vim.cmd 'startinsert!'
-          vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
-        end,
-        on_close = function()
-          vim.cmd 'startinsert!'
-        end,
-      }
-
-      function _LAZYGIT_TOGGLE()
-        lazygit:toggle()
-      end
-
-      vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua _LAZYGIT_TOGGLE()<CR>', { noremap = true, silent = true })
-    end,
   },
 
   {
@@ -156,9 +130,7 @@ return {
         layerSet({ 'n', 'x' }, '<C-Right>', mc.nextCursor)
 
         -- Clear cursors using escape.
-        layerSet('n', '<esc>', function()
-          mc.clearCursors()
-        end)
+        layerSet('n', '<esc>', mc.clearCursors)
       end)
 
       -- Customize how cursors look.
@@ -168,5 +140,26 @@ return {
       hl(0, 'MultiCursorSign', { link = 'SignColumn' })
       hl(0, 'MultiCursorMatchPreview', { link = 'Search' })
     end,
+  },
+
+  {
+    'kdheepak/lazygit.nvim',
+    lazy = true,
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { '<leader>g', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+    },
   },
 }
