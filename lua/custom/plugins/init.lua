@@ -45,18 +45,6 @@ return {
   },
 
   {
-    'akinsho/toggleterm.nvim',
-    version = '*',
-    opts = {
-      open_mapping = '\\',
-      insert_mappings = false,
-      hide_numbers = true,
-      direction = 'vertical',
-      size = 60,
-    },
-  },
-
-  {
     'rmagatti/auto-session',
     opts = {},
   },
@@ -159,7 +147,17 @@ return {
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-      { '<leader>g', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+      { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
     },
+  },
+
+  {
+    'nvim-flutter/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'stevearc/dressing.nvim', -- optional for vim.ui.select
+    },
+    config = true,
   },
 }
