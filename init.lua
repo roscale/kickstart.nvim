@@ -958,6 +958,9 @@ require('lazy').setup({
           go_in_plus = '<Right>',
           go_out_plus = '<Left>',
         },
+        options = {
+          permanent_delete = false,
+        }
       }
 
       vim.keymap.set('n', '\\', function()
