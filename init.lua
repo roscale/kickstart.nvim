@@ -956,7 +956,7 @@ require('lazy').setup({
         mappings = {
           close = '<Esc>',
           go_in_plus = '<Right>',
-          go_out_plus = '<Left>',
+          go_out = '<Left>',
         },
         options = {
           permanent_delete = false,
