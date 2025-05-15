@@ -160,4 +160,11 @@ return {
     },
     config = true,
   },
+
+  {
+    'gbprod/cutlass.nvim',
+    opts = {
+      cut_key = '',
+    },
+  },
 }
