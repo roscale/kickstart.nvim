@@ -60,11 +60,6 @@ return {
   },
 
   {
-    'Pocco81/auto-save.nvim',
-    opts = {},
-  },
-
-  {
     'numToStr/Comment.nvim',
     opts = {
       mappings = {
