@@ -184,4 +184,9 @@ return {
       require('telescope').load_extension 'frecency'
     end,
   },
+
+  {
+    'MagicDuck/grug-far.nvim',
+    opts = {},
+  },
 }
