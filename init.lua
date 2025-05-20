@@ -960,7 +960,7 @@ require('lazy').setup({
         },
         options = {
           permanent_delete = false,
-        }
+        },
       }
 
       vim.keymap.set('n', '\\', function()
