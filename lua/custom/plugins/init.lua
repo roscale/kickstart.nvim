@@ -85,32 +85,29 @@ return {
       local set = vim.keymap.set
 
       -- Add cursor above/below the main cursor.
-      set({ 'n', 'x' }, '<C-Up>', function()
+      set({ 'n', 'x' }, '<C-M-Up>', function()
         mc.lineAddCursor(-1)
       end)
-      set({ 'n', 'x' }, '<C-Down>', function()
+      set({ 'n', 'x' }, '<C-M-Down>', function()
         mc.lineAddCursor(1)
       end)
 
       -- Add a new cursor by matching word/selection
-      set({ 'n', 'x' }, '<C-n>', function()
+      set({ 'n', 'x' }, '<C-M-n>', function()
         mc.matchAddCursor(1)
-      end)
-      set({ 'n', 'x' }, '<C-S-n>', function()
-        mc.matchAddCursor(-1)
       end)
 
       -- Add and remove cursors with control + left click.
-      set('n', '<C-leftmouse>', mc.handleMouse)
-      set('n', '<C-leftdrag>', mc.handleMouseDrag)
-      set('n', '<C-leftrelease>', mc.handleMouseRelease)
+      set('n', '<C-M-leftmouse>', mc.handleMouse)
+      set('n', '<C-M-leftdrag>', mc.handleMouseDrag)
+      set('n', '<C-M-leftrelease>', mc.handleMouseRelease)
 
       -- Mappings defined in a keymap layer only apply when there are
       -- multiple cursors. This lets you have overlapping mappings.
       mc.addKeymapLayer(function(layerSet)
         -- Select a different cursor as the main one.
-        layerSet({ 'n', 'x' }, '<C-Left>', mc.prevCursor)
-        layerSet({ 'n', 'x' }, '<C-Right>', mc.nextCursor)
+        layerSet({ 'n', 'x' }, '<C-M-Left>', mc.prevCursor)
+        layerSet({ 'n', 'x' }, '<C-M-Right>', mc.nextCursor)
 
         -- Clear cursors using escape.
         layerSet('n', '<esc>', mc.clearCursors)
@@ -188,5 +185,43 @@ return {
   {
     'MagicDuck/grug-far.nvim',
     opts = {},
+  },
+
+  {
+    'folke/trouble.nvim',
+    opts = {},
+    cmd = 'Trouble',
+    keys = {
+      {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
+        '<leader>xX',
+        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+        desc = 'Buffer Diagnostics (Trouble)',
+      },
+      {
+        '<leader>cs',
+        '<cmd>Trouble symbols toggle focus=false<cr>',
+        desc = 'Symbols (Trouble)',
+      },
+      {
+        '<leader>cl',
+        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
+      },
+      {
+        '<leader>xL',
+        '<cmd>Trouble loclist toggle<cr>',
+        desc = 'Location List (Trouble)',
+      },
+      {
+        '<leader>xQ',
+        '<cmd>Trouble qflist toggle<cr>',
+        desc = 'Quickfix List (Trouble)',
+      },
+    },
   },
 }
