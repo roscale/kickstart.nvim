@@ -942,13 +942,22 @@ require('lazy').setup({
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-      --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      local ai = require 'mini.ai'
+
+      ai.setup {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter {
+            a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+            i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+          },
+          a = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
+          p = ai.gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
+          f = ai.gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
+          c = ai.gen_spec.treesitter { a = '@class.outer', i = '@class.inner' },
+          u = ai.gen_spec.function_call(),
+        },
+      }
 
       local mini_files = require 'mini.files'
 
@@ -993,9 +1002,12 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'cpp', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1011,6 +1023,50 @@ require('lazy').setup({
         init_selection = 'v',
         node_incremental = 'v',
         node_decremental = '<S-v>',
+      },
+      textobjects = {
+        move = {
+          enable = true,
+          goto_next_start = {
+            [']a'] = '@parameter.inner',
+            [']p'] = '@parameter.inner',
+            [']f'] = '@function.outer',
+            [']c'] = '@class.outer',
+          },
+          goto_next_end = {
+            [']A'] = '@parameter.inner',
+            [']P'] = '@parameter.inner',
+            [']F'] = '@function.outer',
+            [']C'] = '@class.outer',
+          },
+          goto_previous_start = {
+            ['[a'] = '@parameter.inner',
+            ['[p'] = '@parameter.inner',
+            ['[f'] = '@function.outer',
+            ['[c'] = '@class.outer',
+          },
+          goto_previous_end = {
+            ['[A'] = '@parameter.inner',
+            ['[P'] = '@parameter.inner',
+            ['[F'] = '@function.outer',
+            ['[C'] = '@class.outer',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['<leader>na'] = '@parameter.inner',
+            ['<leader>np'] = '@parameter.inner',
+            ['<leader>nf'] = '@function.outer',
+            ['<leader>nc'] = '@class.outer',
+          },
+          swap_previous = {
+            ['<leader>pa'] = '@parameter.inner',
+            ['<leader>pp'] = '@parameter.inner',
+            ['<leader>pf'] = '@function.outer',
+            ['<leader>pc'] = '@class.outer',
+          },
+        },
       },
     },
     config = function(_, opts)

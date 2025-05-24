@@ -232,4 +232,9 @@ return {
       'saghen/blink.cmp',
     },
   },
+
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    opt = {},
+  },
 }
