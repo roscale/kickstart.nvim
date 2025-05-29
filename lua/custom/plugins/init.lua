@@ -236,4 +236,11 @@ return {
     'nvim-treesitter/nvim-treesitter-context',
     opt = {},
   },
+
+  {
+    'nacro90/numb.nvim',
+    config = function()
+      require('numb').setup()
+    end,
+  },
 }
