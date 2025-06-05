@@ -280,4 +280,11 @@ return {
       end, { desc = 'Harpoon next' })
     end,
   },
+
+  {
+    'karb94/neoscroll.nvim',
+    opts = {
+      easing = 'quadratic',
+    },
+  },
 }
