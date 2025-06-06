@@ -129,27 +129,6 @@ return {
   },
 
   {
-    'kdheepak/lazygit.nvim',
-    lazy = true,
-    cmd = {
-      'LazyGit',
-      'LazyGitConfig',
-      'LazyGitCurrentFile',
-      'LazyGitFilter',
-      'LazyGitFilterCurrentFile',
-    },
-    -- optional for floating window border decoration
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    -- setting the keybinding for LazyGit with 'keys' is recommended in
-    -- order to load the plugin when the command is run for the first time
-    keys = {
-      { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
-    },
-  },
-
-  {
     'nvim-flutter/flutter-tools.nvim',
     lazy = false,
     dependencies = {
@@ -295,5 +274,19 @@ return {
       'sindrets/diffview.nvim',
       'nvim-telescope/telescope.nvim',
     },
+    opts = {
+      integrations = {
+        telescope = true,
+        diffview = true,
+      },
+    },
+    config = function(_, opts)
+      local neogit = require 'neogit'
+
+      neogit.setup(opts)
+      vim.keymap.set('n', '<leader>gg', function()
+        neogit.open()
+      end, { desc = 'Neogit' })
+    end,
   },
 }
