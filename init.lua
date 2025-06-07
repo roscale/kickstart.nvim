@@ -705,15 +705,15 @@ require('lazy').setup({
         clangd = clangd_setup_args,
         -- gopls = {},
         pyright = {},
-        rust_analyzer = esp_idf_path and {
-          settings = {
-            ['rust-analyzer'] = {
-              cargo = {
-                target = 'xtensa-esp32s3-espidf',
-              },
-            },
-          },
-        } or {},
+        -- rust_analyzer = esp_idf_path and {
+        --   settings = {
+        --     ['rust-analyzer'] = {
+        --       cargo = {
+        --         target = 'xtensa-esp32s3-espidf',
+        --       },
+        --     },
+        --   },
+        -- } or {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -721,7 +721,6 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
-        --
 
         lua_ls = {
           -- cmd = { ... },
@@ -738,6 +737,20 @@ require('lazy').setup({
           },
         },
       }
+
+      -- Add rust_analyzer if ESP-IDF is set.
+      -- Otherwise, it will be handled by the rusteaceanvim custom plugin.
+      if esp_idf_path then
+        servers.rust_analyzer = vim.tbl_deep_extend('force', servers.rust_analyzer or {}, {
+          settings = {
+            ['rust-analyzer'] = {
+              cargo = {
+                target = 'xtensa-esp32s3-espidf',
+              },
+            },
+          },
+        })
+      end
 
       -- Ensure the servers and tools above are installed
       --
