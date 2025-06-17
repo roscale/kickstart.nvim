@@ -976,7 +976,6 @@ require('lazy').setup({
 
       mini_files.setup {
         mappings = {
-          close = '<Esc>',
           go_in_plus = '<Right>',
           go_out = '<Left>',
         },
