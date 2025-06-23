@@ -1087,8 +1087,9 @@ require('lazy').setup({
     config = function(_, opts)
       require('nvim-treesitter.configs').setup(opts)
 
-      vim.keymap.set('v', 'v', require('nvim-treesitter.incremental_selection').node_incremental, { desc = 'Expand selection' })
-      vim.keymap.set('v', 'V', require('nvim-treesitter.incremental_selection').node_decremental, { desc = 'Shrink selection' })
+      vim.keymap.set({'n', 'x'}, '<C-space>', require('nvim-treesitter.incremental_selection').node_incremental, { desc = 'Expand selection' })
+      vim.keymap.set('x', '<C-BS>', require('nvim-treesitter.incremental_selection').node_decremental, { desc = 'Shrink selection' })
+      vim.keymap.set('x', '<BS>', require('nvim-treesitter.incremental_selection').node_decremental, { desc = 'Shrink selection' })
     end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
