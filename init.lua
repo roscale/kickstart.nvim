@@ -72,93 +72,13 @@ vim.opt.scrolloff = 10
 -- See `:help 'confirm'`
 vim.opt.confirm = true
 
-vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>wa<cr><esc>', { desc = 'Save All Files' })
-
--- Delete default keymaps
---
--- LSP Rename
-vim.keymap.del('n', 'grn')
--- LSP Code actions
-vim.keymap.del({ 'n', 'x' }, 'gra')
--- LSP References
-vim.keymap.del('n', 'grr')
--- LSP Implementation
-vim.keymap.del('n', 'gri')
--- LSP Symbols
-vim.keymap.del('n', 'gO')
-
--- Swap p and P
-vim.keymap.set({ 'n', 'x' }, 'p', 'P', { noremap = true })
-vim.keymap.set({ 'n', 'x' }, 'P', 'p', { noremap = true })
-
--- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
-
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Keybinds to make split navigation easier.
---  Use CTRL+<arrow keys> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-Down>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-Up>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
-vim.keymap.set('n', '<C-S-Left>', '<C-w>H', { desc = 'Move window to the left' })
-vim.keymap.set('n', '<C-S-Right>', '<C-w>L', { desc = 'Move window to the right' })
-vim.keymap.set('n', '<C-S-Down>', '<C-w>J', { desc = 'Move window to the lower' })
-vim.keymap.set('n', '<C-S-Up>', '<C-w>K', { desc = 'Move window to the upper' })
-
-vim.keymap.set('n', '<F10>', '<cmd>:ClangdSwitchSourceHeader<CR>', { silent = true, desc = 'Switch between source/header file' })
-
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
   callback = function()
-    vim.highlight.on_yank()
+    vim.hl.on_yank()
   end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'cpp', 'c' },
-  callback = function()
-    vim.bo.commentstring = '// %s'
-  end,
-})
-
--- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
-  end
-end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
-
-require('lazy').setup {
-  { import = 'plugins' },
-}
+require 'config.keymaps'
+require 'config.lazy'
