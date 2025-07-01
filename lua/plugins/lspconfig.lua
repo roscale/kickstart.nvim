@@ -212,7 +212,6 @@ return {
       or {}
 
     local servers = {
-      clangd = clangd_setup_args,
       -- gopls = {},
       pyright = {},
       -- rust_analyzer = esp_idf_path and {
@@ -295,5 +294,7 @@ return {
         end,
       },
     }
+
+    require('lspconfig').clangd.setup(clangd_setup_args)
   end,
 }
