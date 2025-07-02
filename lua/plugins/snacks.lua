@@ -1,3 +1,5 @@
+---@module 'snacks'
+
 return {
   'folke/snacks.nvim',
   priority = 1000,
@@ -218,67 +220,6 @@ return {
         Snacks.picker.undo()
       end,
       desc = 'Undo History',
-    },
-
-    -- LSP
-    {
-      'gd',
-      function()
-        Snacks.picker.lsp_definitions()
-      end,
-      desc = 'Goto Definition',
-    },
-    {
-      'gD',
-      function()
-        Snacks.picker.lsp_declarations()
-      end,
-      desc = 'Goto Declaration',
-    },
-    {
-      'gr',
-      function()
-        Snacks.picker.lsp_references()
-      end,
-      nowait = true,
-      desc = 'References',
-    },
-    {
-      'gi',
-      function()
-        Snacks.picker.lsp_implementations()
-      end,
-      desc = 'Goto Implementation',
-    },
-    {
-      'gt',
-      function()
-        Snacks.picker.lsp_type_definitions()
-      end,
-      desc = 'Goto T[y]pe Definition',
-    },
-    {
-      '<leader>sS',
-      function()
-        Snacks.picker.lsp_symbols()
-      end,
-      desc = 'LSP Symbols',
-    },
-    {
-      '<leader>ss',
-      function()
-        Snacks.picker.lsp_workspace_symbols()
-      end,
-      desc = 'LSP Workspace Symbols',
-    },
-
-    -- Other
-    {
-      '<leader>cR',
-      function()
-        Snacks.rename.rename_file()
-      end,
-      desc = 'Rename File',
     },
   },
 }

@@ -3,7 +3,6 @@ return {
   dependencies = {
     -- Automatically install LSPs and related tools to stdpath for Neovim
     -- Mason must be loaded before its dependents so we need to set it up here.
-    -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
     { 'williamboman/mason.nvim', opts = {} },
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
@@ -66,28 +65,28 @@ return {
         map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
 
         -- -- Find references for the word under your cursor.
-        -- map('gr', require('telescope.builtin').lsp_references, 'References')
-        --
+        map('gr', Snacks.picker.lsp_references, 'References')
+
         -- -- Jump to the implementation of the word under your cursor.
         -- --  Useful when your language has ways of declaring types without an actual implementation.
-        -- map('gi', require('telescope.builtin').lsp_implementations, 'Implementation')
+        map('gi', Snacks.picker.lsp_implementations, 'Implementation')
         --
         -- -- Jump to the definition of the word under your cursor.
         -- --  This is where a variable was first declared, or where a function is defined, etc.
         -- --  To jump back, press <C-t>.
-        -- map('gd', require('telescope.builtin').lsp_definitions, 'Definition')
+        map('gd', Snacks.picker.lsp_definitions, 'Definition')
 
-        -- -- WARN: This is not Goto Definition, this is Goto Declaration.
-        -- --  For example, in C this would take you to the header.
-        -- map('gD', vim.lsp.buf.declaration, 'Declaration')
+        map('gD', Snacks.picker.lsp_declarations, 'Declaration')
 
         -- -- Fuzzy find all the symbols in your current document.
         -- --  Symbols are things like variables, functions, types, etc.
-        -- map('<leader>sS', require('telescope.builtin').lsp_document_symbols, 'Document Symbols')
+        map('<leader>sS', Snacks.picker.lsp_symbols, 'Document Symbols')
         --
         -- -- Fuzzy find all the symbols in your current workspace.
         -- --  Similar to document symbols, except searches over your entire project.
-        -- map('<leader>ss', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace Symbols')
+        map('<leader>ss', Snacks.picker.lsp_workspace_symbols, 'Workspace Symbols')
+
+        map('gt', Snacks.picker.lsp_type_definitions, 'Type Definition')
         --
         -- -- Jump to the type of the word under your cursor.
         -- --  Useful when you're not sure what type a variable is and you want to see
@@ -193,36 +192,9 @@ return {
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
-    local esp_idf_path = os.getenv 'IDF_PATH'
-
-    -- ESP-IDF
-    local clangd_setup_args = esp_idf_path
-        and {
-          -- handlers = handlers,
-          capabilities = capabilities,
-          cmd = {
-            '/home/roscale/.espressif/tools/esp-clang/16.0.1-fe4f10a809/esp-clang/bin/clangd',
-            '--background-index',
-            '--query-driver=**',
-          },
-          root_dir = function()
-            -- leave empty to stop nvim from cd'ing into ~/ due to global .clangd file
-          end,
-        }
-      or {}
-
     local servers = {
       -- gopls = {},
       pyright = {},
-      -- rust_analyzer = esp_idf_path and {
-      --   settings = {
-      --     ['rust-analyzer'] = {
-      --       cargo = {
-      --         target = 'xtensa-esp32s3-espidf',
-      --       },
-      --     },
-      --   },
-      -- } or {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
       -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -246,20 +218,6 @@ return {
         },
       },
     }
-
-    -- Add rust_analyzer if ESP-IDF is set.
-    -- Otherwise, it will be handled by the rusteaceanvim custom plugin.
-    if esp_idf_path then
-      servers.rust_analyzer = vim.tbl_deep_extend('force', servers.rust_analyzer or {}, {
-        settings = {
-          ['rust-analyzer'] = {
-            cargo = {
-              target = 'xtensa-esp32s3-espidf',
-            },
-          },
-        },
-      })
-    end
 
     -- Ensure the servers and tools above are installed
     --
@@ -295,6 +253,17 @@ return {
       },
     }
 
-    require('lspconfig').clangd.setup(clangd_setup_args)
+    -- ESP-IDF
+    require('lspconfig').clangd.setup(os.getenv 'IDF_PATH' and {
+      capabilities = capabilities,
+      cmd = {
+        '/home/roscale/.espressif/tools/esp-clang/16.0.1-fe4f10a809/esp-clang/bin/clangd',
+        '--background-index',
+        '--query-driver=**',
+      },
+      root_dir = function()
+        -- leave empty to stop nvim from cd'ing into ~/ due to global .clangd file
+      end,
+    } or {})
   end,
 }
