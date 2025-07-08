@@ -15,7 +15,14 @@ return {
       },
     },
     notifier = { enabled = true },
-    picker = { enabled = true },
+    picker = {
+      formatters = {
+        file = {
+          filename_first = true,
+          truncate = 60,
+        },
+      },
+    },
   },
   keys = {
     -- Pickers
