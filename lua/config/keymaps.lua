@@ -32,3 +32,6 @@ vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>wa<cr><esc>', { desc = 'Sa
 
 -- Switch between source and header files with F10
 vim.keymap.set('n', '<F10>', '<cmd>:ClangdSwitchSourceHeader<CR>', { silent = true, desc = 'Switch between source/header file' })
+
+-- Open current line diagnostics in a floating window
+vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
