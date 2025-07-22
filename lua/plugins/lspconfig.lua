@@ -217,7 +217,7 @@ return {
     require('lspconfig').clangd.setup(os.getenv 'IDF_PATH' and {
       capabilities = capabilities,
       cmd = {
-        '/home/roscale/.espressif/tools/esp-clang/16.0.1-fe4f10a809/esp-clang/bin/clangd',
+        '/home/roscale/.espressif/tools/esp-clang/esp-18.1.2_20240912/esp-clang/bin/clangd',
         '--background-index',
         '--query-driver=**',
       },
