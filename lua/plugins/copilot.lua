@@ -2,9 +2,8 @@ return {
   'zbirenbaum/copilot.lua',
   event = 'InsertEnter',
   opts = {
-    suggestion = {
-      auto_trigger = true,
-    },
+    suggestion = { enabled = false },
+    panel = { enabled = false },
   },
   config = function(_, opts)
     require('copilot').setup(opts)
