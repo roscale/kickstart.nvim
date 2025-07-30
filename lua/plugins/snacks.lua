@@ -51,6 +51,7 @@ return {
       '<leader>e',
       function()
         Snacks.explorer {
+          auto_close = true,
           win = {
             list = {
               keys = {
