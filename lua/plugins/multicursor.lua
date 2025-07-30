@@ -11,13 +11,21 @@ return {
     set({ 'n', 'x' }, '<C-M-Up>', function()
       mc.lineAddCursor(-1)
     end)
+
     set({ 'n', 'x' }, '<C-M-Down>', function()
       mc.lineAddCursor(1)
     end)
 
-    -- Add a new cursor by matching word/selection
-    set({ 'n', 'x' }, '<C-M-n>', function()
+    set({ 'n', 'x' }, '<C-n>', function()
       mc.matchAddCursor(1)
+    end)
+
+    set({ 'n', 'x' }, '<C-S-n>', function()
+      mc.deleteCursor()
+    end)
+
+    set({ 'n', 'x' }, '<C-S-M-n>', function()
+      mc.matchAllAddCursors()
     end)
 
     -- Add and remove cursors with control + left click.
@@ -28,10 +36,6 @@ return {
     -- Mappings defined in a keymap layer only apply when there are
     -- multiple cursors. This lets you have overlapping mappings.
     mc.addKeymapLayer(function(layerSet)
-      -- Select a different cursor as the main one.
-      layerSet({ 'n', 'x' }, '<C-M-Left>', mc.prevCursor)
-      layerSet({ 'n', 'x' }, '<C-M-Right>', mc.nextCursor)
-
       -- Clear cursors using escape.
       layerSet('n', '<esc>', mc.clearCursors)
     end)
