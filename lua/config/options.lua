@@ -66,3 +66,8 @@ vim.opt.scrolloff = 10
 -- See `:help 'confirm'`
 vim.opt.confirm = true
 
+-- Turn off swap files. I save very often, I don't need these.
+vim.opt.swapfile = false
+
+-- Fix lsp.log file becoming GBs in size.
+vim.lsp.set_log_level 'off'
