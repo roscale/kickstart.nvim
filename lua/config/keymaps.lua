@@ -11,6 +11,10 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Exit terminal mode with double Esc
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
+-- Scroll with Shift + Up/Down
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<C-u>', { remap = true, desc = 'Half-page up' })
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<C-d>', { remap = true, desc = 'Half-page down' })
+
 -- Move between windows with Ctrl + Arrow keys
 vim.keymap.set('n', '<C-Left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-Right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
