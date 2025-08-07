@@ -199,6 +199,8 @@ return {
     require('mason-tool-installer').setup {
       ensure_installed = {
         'pyright',
+        'isort',
+        'black',
         'lua_ls',
         'stylua',
       },
